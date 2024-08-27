@@ -1,0 +1,197 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0; /* Slightly darker gray background for contrast */
+    font-family: Arial, sans-serif; /* Use a clean font for the button */
+}
+
+#chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px); /* Adjust size if needed */
+    grid-template-rows: repeat(8, 60px); /* Adjust size if needed */
+    gap: 1px; /* Small gap between squares */
+    border: 4px solid #333; /* Slightly thicker border around the board */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    background-color: #fff; /* Background color of the board */
+    width: 100%;
+    max-width: 480px; /* Maximum width for larger screens */
+    aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    margin-bottom: 20px; /* Space between the chessboard and button */
+}
+
+/* Style each square on the board */
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    position: relative;
+    background-color: #eee; /* Default background color */
+    border-radius: 4px; /* Slightly rounded corners for squares */
+    box-sizing: border-box; /* Include border in the element's total width and height */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+}
+
+/* White square color */
+.square.white {
+    background: linear-gradient(145deg, #f0d9b5, #e0c49c); /* Subtle gradient for white squares */
+}
+
+/* Black square color */
+.square.black {
+    background: linear-gradient(145deg, #b58863, #a65d2c); /* Subtle gradient for black squares */
+}
+
+/* Hover effect for interaction */
+.square:hover {
+    background-color: #ddd; /* Slightly darker color on hover */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1); /* Add shadow effect on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Styling for chess pieces */
+.piece {
+    font-size: 2em; /* Adjust size as needed */
+    line-height: 1;
+    text-align: center;
+    user-select: none; /* Prevent text selection */
+    transition: transform 0.3s, opacity 0.3s; /* Smooth transitions for piece interaction */
+}
+
+/* White piece color */
+.piece.white {
+    color: #fff; /* Contrast with dark squares */
+}
+
+/* Black piece color */
+.piece.black {
+    color: #000; /* Contrast with light squares */
+}
+
+/* Styling for dragging pieces */
+.piece.dragging {
+    opacity: 0.8;
+    cursor: grabbing;
+    transform: scale(1.2); /* Slightly increase size when dragging */
+    transition: transform 0.3s, opacity 0.3s; /* Smooth transitions */
+}
+
+/* Animation for moving pieces */
+@keyframes moveAnimation {
+    0% {
+        transform: scale(1) translateZ(0);
+    }
+    50% {
+        transform: scale(1.1) translateZ(0);
+    }
+    100% {
+        transform: scale(1) translateZ(0);
+    }
+}
+
+/* Apply move animation */
+.piece.moving {
+    animation: moveAnimation 0.5s ease-in-out; /* Animation for piece movement */
+}
+
+/* Highlight squares when dragging */
+.square.highlight {
+    background-color: rgba(255, 215, 0, 0.4); /* Light yellow background */
+    box-shadow: inset 0 0 12px rgba(255, 215, 0, 0.5); /* Enhanced yellow glow effect */
+    transform: scale(1.05); /* Slightly enlarge when highlighted */
+}
+
+/* Highlighting possible moves */
+.possible-move {
+    background-color: rgba(0, 255, 0, 0.3); /* Light green background */
+    border: 2px solid green; /* Green border for clear indication */
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.5); /* Green glow effect */
+}
+
+/* Styling for the Start Game button */
+#startButton {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text */
+    border: none;
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for better appearance */
+    font-size: 1em; /* Adjust font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    margin-bottom: 20px; /* Space below the button */
+}
+
+/* Button hover effect */
+#startButton:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Button active effect */
+#startButton:active {
+    background-color: #388e3c; /* Even darker green when pressed */
+    transform: scale(1); /* Return to normal size */
+}
+
+/* Highlighting the king's square in check */
+.king-check {
+    background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent red background */
+    border: 2px solid red; /* Red border for clear indication */
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Red glow effect */
+    animation: kingCheckAnimation 1s ease-in-out; /* Animation for king's check */
+}
+
+/* Animation for the king's check highlight */
+@keyframes kingCheckAnimation {
+    0% {
+        background-color: rgba(255, 0, 0, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        background-color: rgba(255, 0, 0, 0.7);
+        transform: scale(1.1);
+    }
+    100% {
+        background-color: rgba(255, 0, 0, 0.5);
+        transform: scale(1);
+    }
+}
+
+/* Define the keyframes for piece movement animation */
+@keyframes movePiece {
+    from {
+        transform: scale(1) translateZ(0); /* Starting state */
+    }
+    to {
+        transform: scale(1) translateZ(0); /* Ending state, adjust as needed */
+    }
+}
+
+/* Animation for moving pieces */
+.piece.moving {
+    animation: movePiece 0.3s ease-out; /* Adjust duration and easing as needed */
+}
+
+/* Additional smooth animation for hover effect on pieces */
+.piece:hover {
+    animation: pulse 0.5s ease-in-out infinite; /* Pulsing animation on hover */
+}
+
+/* Define pulsing animation for hover effect */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
